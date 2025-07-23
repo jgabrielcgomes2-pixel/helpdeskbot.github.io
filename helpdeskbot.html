@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HelpDesk</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="helpdeskbot.css">
 </head>
 <body>
     <header>
@@ -13,7 +13,7 @@
                 <img src="images/Logo transparente.png" alt="Logo do Bot" height="48">
             </div>
             <ul class="nav-links">
-                <li><a href="#inicio" class="nav-btn">Início</a></li>
+                <li><a href="helpdeskbot.html" class="nav-btn">Início</a></li>
                 <li><a href="#Documentação" class="nav-btn">Documentação</a></li>
                 <li><a href="#dashboard" class="nav-btn dashboard-btn">Dashboard</a></li>
             </ul>
@@ -172,8 +172,9 @@
                         <img src="images/discord-white-icon.svg" alt="Discord" width="24" height="24" style="display:inline-block;vertical-align:middle;"/>
                         Adicionar ao Discord
                     </a>
-                    <a href="#" class="support-btn" style="display: inline-flex; align-items: center; gap: 10px; background: #23272f; color: #fff; font-weight: 600; font-size: 1.08rem; border-radius: 8px; padding: 12px 28px; text-decoration: none; box-shadow: 0 2px 12px 0 #23272f99; transition: background 0.2s, box-shadow 0.2s;">
-                        href="https://discord.gg/CrrKdDd6yr" class="support-btn" style="display: inline-flex; align-items: center; gap: 10px; background: #23272f; color: #fff; font-weight: 600; font-size: 1.08rem; border-radius: 8px; padding: 12px 28px; text-decoration: none; box-shadow: 0 2px 12px 0 #23272f99; transition: background 0.2s, box-shadow 0.2s;">Suporte
+                    <a href="https://discord.gg/CrrKdDd6yr" class="support-btn" style="display: inline-flex; align-items: center; gap: 10px; background: #23272f; color: #fff; font-weight: 600; font-size: 1.08rem; border-radius: 8px; padding: 12px 28px; text-decoration: none; box-shadow: 0 2px 12px 0 #23272f99; transition: background 0.2s, box-shadow 0.2s;">
+                        <img src="images/discord-white-icon.svg" alt="Discord" width="24" height="24" style="display:inline-block;vertical-align:middle;"/>
+                        Servidor de Suporte
                     </a>
                 </div>
             </div>
@@ -181,7 +182,13 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 Seu Bot Discord. Todos os direitos reservados.</p>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+            <p>&copy; 2025 Seu Bot Discord. Todos os direitos reservados.</p>
+            <div style="display:flex; gap:12px; margin-top:4px;">
+                <a href="services.html" class="footer-btn" style="display:inline-block; background:#23272f; color:#fff; font-weight:600; font-size:1rem; border-radius:8px; padding:8px 20px; text-decoration:none; box-shadow:0 2px 8px 0 #23272f99; transition:background 0.2s;">Termos de Serviço</a>
+                <a href="privacy_terms.html" class="footer-btn" style="display:inline-block; background:#23272f; color:#fff; font-weight:600; font-size:1rem; border-radius:8px; padding:8px 20px; text-decoration:none; box-shadow:0 2px 8px 0 #23272f99; transition:background 0.2s;">Política de Privacidade</a>
+            </div>
+        </div>
     </footer>
 </body>
 </html>
