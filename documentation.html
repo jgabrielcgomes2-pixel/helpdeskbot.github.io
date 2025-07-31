@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark light">
+    <title>Documentação</title>
+    <link rel="stylesheet" href="documentation.css">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .navpanel {
+        min-height: 56px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
+      main.main-content {
+        flex: 1 0 auto;
+        display: flex;
+        min-height: 0;
+      }
+      .main-doc-area {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      .doc-content {
+        flex: 1 1 auto;
+      }
+      .footer {
+        flex-shrink: 0;
+        width: 100%;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 100;
+      }
+      /* Espaço extra para não sobrepor conteúdo com o footer */
+      .main-doc-area:after {
+        content: "";
+        display: block;
+        height: 64px;
+      }
+    </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Busca os templates de cada seção
+    const sectionNames = [
+      'Visão geral',
+      'Introdução',
+      'Configuracao',
+      'Comandos',
+      'Personalização',
+      'Moderação',
+      'Recursos',
+      'FAQ',
+      'Solução de problemas'
+    ];
+        const sections = {};
+        sectionNames.forEach(name => {
+            const tpl = document.getElementById('section-' + name.replace(/ /g, '-').toLowerCase());
+            if (tpl) sections[name] = tpl.innerHTML.trim();
+        });
+        const sidebarItems = document.querySelectorAll('.sidebar-menu li');
+        const docContent = document.querySelector('.doc-content');
+        const docBanner = document.querySelector('.doc-banner');
+        const setSection = (sectionName) => {
+            // Remove qualquer conteúdo dinâmico anterior
+            let dynamic = docContent.querySelector('.doc-dynamic');
+            if (dynamic) dynamic.remove();
+            // Cria um container para o conteúdo dinâmico
+            const dynamicDiv = document.createElement('div');
+            dynamicDiv.className = 'doc-dynamic';
+            dynamicDiv.innerHTML = sections[sectionName] || '<h1>Seção em desenvolvimento!</h1>';
+            docContent.appendChild(dynamicDiv);
+            // Se for Visão geral, ativa o clique só no texto 'Introdução' abaixo da linha
+            if (sectionName === 'Visão geral') {
+                const nextLink = dynamicDiv.querySelector('.doc-next-link');
+                if (nextLink) {
+                    nextLink.style.cursor = 'pointer';
+                    nextLink.onclick = function(e) {
+                        e.preventDefault();
+                        sidebarItems[1].click();
+                    };
+                }
+            }
+        };
+        sidebarItems.forEach((item, idx) => {
+            item.addEventListener('click', function() {
+                sidebarItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                setSection(this.textContent);
+            });
+        });
+        // Inicializa com a primeira seção
+        setSection('Visão geral');
+        // Ativa o clique só no texto 'Introdução' ao carregar
+        setTimeout(() => {
+            const dynamic = docContent.querySelector('.doc-dynamic');
+            if (dynamic) {
+                const nextLink = dynamic.querySelector('.doc-next-link');
+                if (nextLink) {
+                    nextLink.style.cursor = 'pointer';
+                    nextLink.onclick = function(e) {
+                        e.preventDefault();
+                        sidebarItems[1].click();
+                    };
+                }
+            }
+        }, 100);
+    });
+    </script>
+    <!-- Templates das seções para fácil customização -->
+    <script type="text/template" id="section-introdução">
+<div>
+<h1>Introdução</h1>
+<p>Bem-vindo à documentação do HelpDesk, um bot de Discord especializado em criar sistemas de tickets avançados para suporte, moderação e organização de comunidades!</p>
+<ul>
+<li>✅ Criar tickets sob demanda (por comandos ou menus interativos);</li>
+<li>✅ Personalizar painéis e opções;</li>
+<li>✅ Atribuir cargos específicos para atender tickets;</li>
+<li>✅ Fazer registro das mensagens do ticket;</li>
+</ul>
+<h2>📍 Como Começar</h2>
+<ol>
+<li><h3>Convide o Bot para seu Servidor</h3>
+Clique no botão azul no canto superior da página para adicionar o HelpDesk ao seu servidor do Discord. (Requer permissões de <b>Gerenciar Canais</b> e <b>Enviar Mensagens</b>)
+</li>
+<li><h3>Configure o Sistema de Tickets</h3>
+Consulte a seção <b>Configuração</b> ao lado para aprender como configurar o sistema de tickets corretamente.
+</li>
+<li><h3>Próximos Passos</h3>
+Consulte as próximas seções da documentação para detalhes sobre:
+<ul>
+<li>🔸 <b>Comandos Disponíveis</b> - Saber o que pode ou não pode utilizar;</li>
+<li>🔸 <b>Personalização</b> - Mais detalhes sobre personalização.</li>
+</ul>
+</li>
+</ol>
+<h2>🧩 Dica Rápida</h2>
+<p>Em caso de dúvidas sobre a personalização do bot, use o comando <b>/help</b> no seu servidor. É um guia completo passo-a-passo da configuração dele.</p>
+<hr class="doc-divider" />
+<div class="doc-next-row">
+  <div class="doc-next-space"></div>
+  <div class="doc-next">
+    <a href="#" class="doc-next-combo" onclick="document.querySelectorAll('.sidebar-menu li')[2].click();return false;">
+      <span class="doc-next-label">Próximo</span><br />
+      <span class="doc-next-link">Configuração</span>
+    </a>
+  </div>
+</div>
+</div>
+</script>
+<script type="text/template" id="section-configuracao">
+<div>
+<h1>Configuração</h1>
+<p>Você acabou de adicionar o HelpDesk no seu servidor e não sabe por onde começar? Então você veio ao lugar certo! Vou te ensinar como configurar o bot no seu servidor.</p>
+
+<h2>1º Passo: Configurar Requisitos</h2>
+<ul>
+  <li><code>/ticketrole</code> - Configura o cargo de suporte que terá acesso aos canais de ticket criados.</li>
+  <li><code>/ticketlog</code> - Configura o canal de transcrições das mensagens enviadas nos tickets.</li>
+  <li><code>/ticketcategory</code> - Configura a categoria onde vão ser criados os canais de tickets.</li>
+  <li><code>/statuschannel</code> - Configura o canal para avisos de status do bot.</li>
+</ul>
+
+<h2>2º Passo: Configurar o Painel Principal</h2>
+<ul>
+  <li>Digite o comando <code>/ticketsetuppersonalizar</code>. O resultado deverá ser este menu de preview:</li>
+</ul>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Introdução1.png" alt="Prévia do painel de tickets" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<ul>
+  <li><b>Lembre-se:</b> Você deve remover as imagens da nossa logo do painel (Imagem, Thumbnail, Autor/Icone e Footer/Icone), pois estão protegidas por <b>Direitos Autorais</b>. Se quiser manter o nome, pode manter, mas você <b>DEVE</b> remover as logos e imagens, e substituir pelas suas.</li>
+  <li>Depois de personalizar tudo, basta clicar no botão <b>[✅ Aprovar]</b> para salvar o painel.</li>
+</ul>
+
+<h2>3º Passo: Definindo o Painel Principal</h2>
+<ul>
+  <li>Digite o comando <code>/ticketsetup &lt;canal&gt;</code>, e o painel será enviado para o canal selecionado.</li>
+</ul>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Introdução2.png" alt="Painel principal enviado" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+
+<h2>4º Passo: Configurar Painéis de Opções</h2>
+<ul>
+  <li>Digite o comando <code>/ticketpersonalizar &lt;ID da mensagem do painel&gt; &lt;opção que deseja customizar&gt;</code> e comece a personalizar. Recomendamos que coloque pelo menos um título e uma descrição quaisquer para abrir o menu de preview e começar a editar com mais eficiência.</li>
+  <li>Temos uma opção para colocar código JSON, para carregar um embed customizado por você anteriormente, poupando muito trabalho.</li>
+  <li>Depois de customizar tudo, basta clicar em <b>[✅ Aprovar]</b> para salvar o embed.</li>
+  <li>Faça o mesmo passo-a-passo para as outras opções também.</li>
+</ul>
+
+<h2>5º Passo: Finalizando</h2>
+<p>Agora está tudo pronto! Seu painel de tickets está 100% operante agora! Mas tenho algumas orientações para você que te servirão no futuro:</p>
+<ul>
+  <li>O bot está atualmente passando por instabilidades de funcionamento, então definimos um aviso de reinicio toda vez que o bot sofrer alguma falha através do comando <code>/statuschannel</code>. Quando isso acontecer, você deve colocar o painel de ticket novamente usando <code>/ticketsetup</code> para fazer com que a interação volte a funcionar.</li>
+</ul>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Introdução3.png" alt="Painel reiniciado" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<ul>
+  <li>Não se preocupe com isso: Todos os seus painéis, incluindo o Principal e as Opções que você definiu ficarão salvas para uso posterior utilizando o <code>/ticketsetup</code>, então pode ficar despreocupado sobre ter que configurar tudo de novo.</li>
+  <li>Estamos trabalhando para corrigir as instabilidades e garantir o salvamento da interação com o painel principal, mas por enquanto, esta é a orientação que estamos dando para os nossos usuários.</li>
+  <li>Qualquer dúvida que possuir, entre em contato através do nosso Servidor de Suporte</li>
+</ul>
+<div style="margin: 32px 0; text-align: center;">
+  <a href="https://discord.gg/3nPbD7cfuN" class="doc-btn doc-btn-gray" style="display:inline-flex;align-items:center;gap:8px;">
+    Servidor de Suporte
+    <img src="images/external-link.svg" alt="Abrir" class="btn-icon" style="margin-left:4px;" />
+  </a>
+</div>
+<hr class="doc-divider" />
+<div class="doc-next-row">
+  <div class="doc-next-space"></div>
+  <div class="doc-next">
+    <a href="#" class="doc-next-combo" onclick="document.querySelectorAll('.sidebar-menu li')[3].click();return false;">
+      <span class="doc-next-label">Próximo</span><br />
+      <span class="doc-next-link">Comandos</span>
+    </a>
+  </div>
+</div>
+</div>
+</script>
+    </script>
+    <script type="text/template" id="section-visão-geral">
+<div>
+<h1>Documentação HelpDesk</h1>
+<p>Bem-vindo à documentação oficial do <b>HelpDesk</b>!</p>
+<p>O HelpDesk é um bot de tickets para Discord totalmente gratuito e altamente personalizável, com sistema avançado de painel, logs, categorias, cargos, status, blacklist, transcrição e muito mais.</p>
+<p>Esta documentação fornece guias abrangentes e informações úteis sobre o HelpDeskBot e seus recursos/configurações. Os recursos do HelpDesk são continuamente aprimorados com base no seu feedback.</p>
+<h2>Estrutura da documentação</h2>
+<ul>
+  <li><b>Introdução</b> - Um guia para começar a usar o HelpDeskBot</li>
+  <li><b>Configuração</b> - Como configurar painel, logs, categorias, cargos, status</li>
+  <li><b>Comandos</b> - Explicação detalhada de todos os comandos</li>
+  <li><b>Personalização</b> - Como personalizar o painel e opções</li>
+  <li><b>FAQ</b> - Respostas às perguntas mais frequentes</li>
+  <li><b>Solução de problemas</b> - Soluções para problemas comuns</li>
+</ul>
+<p>Esta documentação foi criada e mantida por <b>gabebr_</b> (dono do HelpDeskBot) e equipe de suporte.</p>
+<p>Se você quiser enviar feedback, envie uma mensagem no nosso servidor de suporte.</p>
+<div class="doc-buttons">
+  <a href="/" class="doc-btn doc-btn-gray">Site <img src="images/external-link.svg" alt="Abrir" class="btn-icon" /></a>
+  <a href="https://discord.com/oauth2/authorize?client_id=SEU_CLIENT_ID&scope=bot" class="doc-btn doc-btn-gray">Convidar Bot <img src="images/external-link.svg" alt="Abrir" class="btn-icon" /></a>
+  <a href="https://discord.gg/3nPbD7cfuN" class="doc-btn doc-btn-gray">Servidor Discord <img src="images/external-link.svg" alt="Abrir" class="btn-icon" /></a>
+</div>
+<hr class="doc-divider" />
+<div class="doc-next-row">
+  <div class="doc-next-space"></div>
+  <div class="doc-next">
+    <a href="#" class="doc-next-combo" onclick="document.querySelectorAll('.sidebar-menu li')[1].click();return false;">
+      <span class="doc-next-label">Próximo</span><br />
+      <span class="doc-next-link">Introdução</span>
+    </a>
+  </div>
+</div>
+</div>
+    </script>
+<script type="text/template" id="section-comandos">
+<div>
+<h1>Comandos</h1>
+<p>Os comandos listados abaixo estão em ordem alfabética, e são os comandos disponíveis para todos. Você pode usar o comando <strong>/help</strong> para ver uma lista de todos os comandos disponíveis.</p>
+</div>
+<h3>/blacklist</h3>
+<p>Mostra a lista dos usuários que estão na blacklist do seu servidor e os motivos pelos quais estão nelas.</p>
+<p>Exemplo: /blacklist</p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando1.png" alt="Comando /blacklist" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/helpanel</h3>
+<p>Cria um painel de ajuda com botões para acessar os comandos do HelpDesk.</p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando2.png" alt="Comando /helpanel" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/pingstaff</h3>
+<p>Notifica todos os membros da equipe de suporte sobre um novo ticket.</p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando3.png" alt="Comando /pingstaff" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/report</h3>
+<p>Denuncia um servidor por quebra dos <a href="https://helpdeskbot.github.io/services.html">Termos de Serviço</a> ou Violações dos Termos do Discord.</p>
+<p>Exemplo: /report (ID do servidor) (motivo) (link de convite do servidor)</p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando4.png" alt="Comando /report" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/statuschannel</h3>
+<p>Configura o canal onde serão enviados os avisos de status do bot, como reinícios, atualizações e manutenção.</p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando5.png" alt="Comando /statuschannel" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<p>Exemplo de mensagem de status:</p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando6.png" alt="Mensagem de reinício" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/ticketblacklist</h3>
+<p>Adiciona ou remove um usuário da blacklist do HelpDesk, impedindo que ele crie tickets.</p>
+<p><strong>Exemplo: /ticketblacklist @usuário (motivo)</strong></p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando7.png" alt="Comando /ticketblacklist" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/ticketcategory</h3>
+<p>Configura a categoria onde os canais de tickets serão criados.</p>
+<p><strong>Exemplo: /ticketcategory (ID da categoria)</strong></p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando8.png" alt="Comando /ticketcategory" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/ticketclaim</h3>
+<p>Reivindica um ticket, atribuindo-o a você mesmo. Apenas usuários com o cargo de suporte podem reivindicar tickets.</p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando9.png" alt="Comando /ticketclaim" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/ticketlog</h3>
+<p>Configura o canal onde serão enviadas as transcrições das mensagens dos tickets.</p>
+<p><strong>Exemplo: /ticketlog (canal)</strong></p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando10.png" alt="Comando /ticketlog" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/ticketpersonalizar</h3>
+<p>Personaliza as opções do painel de tickets, como título, descrição, emojis, etc.</p>
+<p><strong>Exemplo: /ticketpersonalizar (ID da mensagem do painel) (opção) (campos do Embed)</strong></p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando11.png" alt="Comando /ticketpersonalizar" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/ticketrole</h3>
+<p>Configura o cargo de suporte que terá acesso aos canais de tickets criados.</p>
+<p><strong>Exemplo: /ticketrole (cargo)</strong></p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando12.png" alt="Comando /ticketrole" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/ticketsetup</h3>
+<p>Configura o painel de tickets no canal especificado. Você pode usar este comando para enviar o painel principal junto com as opções personalizadas.</p>
+<p><strong>Exemplo: /ticketsetup (canal)</strong></p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando13.png" alt="Comando /ticketsetup" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/ticketsetuppersonalizar</h3>
+<p>Personaliza o painel principal de tickets, permitindo que você adicione ou remova opções.</p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando14.png" alt="Comando /ticketsetuppersonalizar" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<h3>/unblacklist</h3>
+<p>Remove um usuário da lista negra, permitindo que ele crie tickets novamente.</p>
+<p><strong>Exemplo: /unblacklist @usuário</strong></p>
+<div style="text-align:center; margin: 24px 0;">
+  <img src="images/Comando15.png" alt="Comando /unblacklist" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px #0008;">
+</div>
+<hr class="doc-divider" />
+<div class="doc-next-row">
+  <div class="doc-next-space"></div>
+  <div class="doc-next">
+    <a href="#" class="doc-next-combo" onclick="document.querySelectorAll('.sidebar-menu li')[4].click();return false;">
+      <span class="doc-next-label">Próximo</span><br />
+      <span class="doc-next-link">Personalização</span>
+    </a>
+  </div>
+</div>
+</div>
+</script>
+</head>
+<body>
+    <!-- Navpanel fixo -->
+    <nav class="navpanel">
+        <div class="navpanel-content">
+            <div class="nav-logo">
+                <img src="images/Logo transparente.png" alt="HelpDeskBot Logo" height="40">
+                <span>HelpDesk</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="documentation.html" class="active">Documentação</a>
+                <a href="https://discord.com/oauth2/authorize?client_id=1396678533413208124" class="discord-btn">
+                    <img src="images/discord-white-icon.svg" alt="Discord" style="height:20px;vertical-align:middle;margin-right:6px;">
+                    <span class="discord-btn-text">Adicionar bot</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!-- Banner removido daqui, ficará apenas ao lado da sidebar -->
+    <main class="main-content">
+        <aside class="sidebar">
+            <input type="text" class="sidebar-search" placeholder="Procurar..." name="sidebar-search">
+            <ul class="sidebar-menu">
+                <li class="active">Visão geral</li>
+                <li>Introdução</li>
+                <li>Configuracao</li>
+                <li>Comandos</li>
+                <li>Personalização</li>
+                <li>Moderação</li>
+                <li>Recursos</li>
+                <li>FAQ</li>
+                <li>Solução de problemas</li>
+            </ul>
+        </aside>
+        <div class="main-doc-area">
+            <div class="doc-banner">
+                <img src="images/Banner Animado.gif" alt="Banner Animado" class="banner-animado" width="1200" height="300">
+            </div>
+            <section class="doc-content">
+                <!-- O conteúdo será dinâmico via JS -->
+            </section>
+        </div>
+    </main>
+    <!-- Footer fixo -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span>© HelpDeskBot 2025 - Todos os direitos reservados</span>
+            <span>|</span>
+            <a href="/privacidade.html">Política de Privacidade</a>
+            <span>|</span>
+            <a href="/termos.html">Termos de Serviço</a>
+        </div>
+    </footer>
+</body>
+</html>
